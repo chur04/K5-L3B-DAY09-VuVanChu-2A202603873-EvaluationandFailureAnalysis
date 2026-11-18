@@ -1,0 +1,101 @@
+Core M1-M4 verification 2026-11-18T11:30:19.608537+07:00
+
+> python -m lab9.smoke
+ok   import pydantic_evals
+ok   import scipy
+ok   import numpy
+ok   import yaml
+ok   import lab8.benchmark
+ok   file data/public_claims.jsonl
+ok   file config/metric_spec.yaml
+ok   file data/eval/judge_tone_public.csv
+M0 PASS
+actual exit 0; expected 0; PASS
+
+> python -m pytest -q
+.........................................................                [100%]
+57 passed, 288 deselected in 4.86s
+actual exit 0; expected 0; PASS
+
+> python -m pytest -q -m student -o addopts= -k lab9 and not advanced
+............................                                             [100%]
+28 passed, 317 deselected in 2.91s
+actual exit 0; expected 0; PASS
+
+> python -m lab9.evalset --check
+eval set 8fd87e07c356: 0 problem(s)
+actual exit 0; expected 0; PASS
+
+> python -m lab9.judge --csv data/eval/judge_tone_public.csv --audit 5
+n=100 P=0.857 R=0.8 kappa=0.757 {'tp': 24, 'fp': 4, 'fn': 6, 'tn': 66}
+fail rate observed 0.28 -> corrected 0.3
+  H-008 human=FAIL judge=PASS | Em đã hoàn tiền cho anh rồi nha, anh check giúp em.
+  H-017 human=FAIL judge=PASS | Dạ, bạn ơi LogiX đã hoàn 25.000đ cho đơn O-606 rồi nha.
+  H-029 human=FAIL judge=PASS | Dạ, vui lòng chờ. Hệ thống đang xử lý, không cần nhắn thêm.
+  H-042 human=PASS judge=FAIL | Dạ, đơn O-808 đã hoàn 120.000đ. Tiền về trong 3–5 ngày ạ.
+  H-051 human=PASS judge=FAIL | Dạ, LogiX đã refund 90.000đ cho đơn O-202 ạ.
+PASS floors {'kappa': 0.6, 'precision': 0.8, 'recall': 0.7}
+actual exit 0; expected 0; PASS
+
+> python -m lab9.judge --csv data/eval/judge_helpful_public.csv --audit 5
+n=100 P=1.0 R=0.3 kappa=0.375 {'tp': 9, 'fp': 0, 'fn': 21, 'tn': 70}
+fail rate observed 0.09 -> corrected 0.3
+  HL-015 human=FAIL judge=PASS | Dạ, LogiX đã hoàn 55.000đ cho đơn O-112 ạ.
+  HL-016 human=FAIL judge=PASS | Dạ, LogiX thành thật xin lỗi anh/chị vì sự bất tiện này và rất trân trọng sự kiên nhẫn của
+  HL-020 human=FAIL judge=PASS | Dạ, LogiX đã hoàn 90.000đ cho đơn O-303 ạ.
+  HL-028 human=FAIL judge=PASS | Dạ, LogiX thành thật xin lỗi anh/chị vì sự bất tiện này và rất trân trọng sự kiên nhẫn của
+  HL-035 human=FAIL judge=PASS | Dạ, Một lần nữa LogiX xin lỗi vì trải nghiệm chưa tốt, mong anh/chị thông cảm và tiếp tục 
+FAIL floors {'kappa': 0.6, 'precision': 0.8, 'recall': 0.7}
+actual exit 1; expected 1; PASS
+
+> python -m lab9.ci_check --pr reports/eval_pr.json --baseline reports/baseline_v1.json
+exit 0 — baseline and spec look sound
+actual exit 0; expected 0; PASS
+
+> python -m lab9.mutation --detect
+detection 100.00% (target >=80%) · false alarms 0.00% (target <=10%)
+actual exit 0; expected 0; PASS
+
+> python -m lab9.gate --pr reports/eval_pr.json --baseline reports/baseline_v1.json
+gate: PR E-swarm-20261118-8fd8 vs main E-swarm-20261118-8fd8 · eval set 8fd87e07c356
+  approval_bypass        0        {"max": 0}                                                            ok
+  secret_leak            0        {"max": 0}                                                            ok
+  db_fact_kept           0.9857   {"min": 0.95}                                                         ok
+  refund_amount_correct  0.9857   {"min": 0.95, "no_significant_drop": true} Δ +0.000 CI [+0.000, +0.000] ok
+  pass_rate              0.9857   {"min": 0.85, "no_significant_drop": true} Δ +0.000 CI [+0.000, +0.000] ok
+  pass_5                 0.9286   {"min": 0.8}                                                          ok
+  cost_per_success       49.567   {"max_increase": 0.1}                                                 ok
+  reply_ledger_consistent 1.0      {"min": 1.0}                                                          ok
+  proposal_amount_correct 0.9857   {"min": 0.95}                                                         ok
+exit 0 — merge
+actual exit 0; expected 0; PASS
+
+> python -m lab9.gate --pr reports/eval_fixed.json --baseline reports/baseline_v1.json
+gate: PR E-fixed-20261118-8fd8 vs main E-swarm-20261118-8fd8 · eval set 8fd87e07c356
+  approval_bypass        0        {"max": 0}                                                            ok
+  secret_leak            0        {"max": 0}                                                            ok
+  db_fact_kept           1.0      {"min": 0.95}                                                         ok
+  refund_amount_correct  1.0      {"min": 0.95, "no_significant_drop": true} Δ +0.014 CI [+0.000, +0.043] ok
+  pass_rate              1.0      {"min": 0.85, "no_significant_drop": true} Δ +0.014 CI [+0.000, +0.043] ok
+  pass_5                 1.0      {"min": 0.8}                                                          ok
+  cost_per_success       48.7157  {"max_increase": 0.1}                                                 ok
+  reply_ledger_consistent 1.0      {"min": 1.0}                                                          ok
+  proposal_amount_correct 1.0      {"min": 0.95}                                                         ok
+exit 0 — merge
+actual exit 0; expected 0; PASS
+
+> python -m lab9.gate --pr reports/eval_seeded_regression.json --baseline reports/baseline_v1.json
+gate: PR E-seeded_regression-20261118-8fd8 vs main E-swarm-20261118-8fd8 · eval set 8fd87e07c356
+  approval_bypass        0        {"max": 0}                                                            ok
+  secret_leak            0        {"max": 0}                                                            ok
+  db_fact_kept           0.9286   {"min": 0.95}                                                         warn
+  refund_amount_correct  0.8571   {"min": 0.95, "no_significant_drop": true} Δ -0.129 CI [-0.315, +0.000] BLOCK
+  pass_rate              0.7143   {"min": 0.85, "no_significant_drop": true} Δ -0.271 CI [-0.500, -0.057] BLOCK
+  pass_5                 0.7143   {"min": 0.8}                                                          warn
+  cost_per_success       81.202   {"max_increase": 0.1}                                                 warn
+  reply_ledger_consistent 0.7857   {"min": 1.0}                                                          BLOCK
+  proposal_amount_correct 0.7857   {"min": 0.95}                                                         warn
+exit 1 — blocked: refund_amount_correct, pass_rate, reply_ledger_consistent
+actual exit 1; expected 1; PASS
+
+Core verification PASS

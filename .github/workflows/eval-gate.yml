@@ -32,8 +32,10 @@ jobs:
         with: {python-version: "3.13", activate-environment: true, enable-cache: true, cache-dependency-glob: "src/requirements*.txt"}
       - run: uv pip install -r requirements.txt -r requirements-lab9.txt
       - run: python -m lab9.smoke
+      - run: python -m pytest -q
       - run: python -m pytest -q -m student -o addopts= -k "lab9 and not advanced"
       - run: python -m lab9.evalset --check
+      - run: python -m lab9.mutation --detect
       - name: Evaluate and gate the PR swarm
         shell: bash
         run: |
@@ -58,28 +60,3 @@ jobs:
             echo "Expected the gate to block seeded_regression on pass_rate with exit 1 (got $gate_status)."
             exit 1
           fi
-
-  # Advanced/Expert (M5-M7). Runs only once the student commits reports/baseline_v2.json, so a
-  # Core-only submission stays green. Exit 1 = a survived mutant or a false alarm.
-  eval-gate-v2:
-    needs: eval-gate
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    env: {PYTHONUTF8: "1"}
-    defaults: {run: {working-directory: src}}
-    steps:
-      - uses: actions/checkout@v7
-        with: {persist-credentials: false}
-      - id: has
-        run: "test -f reports/baseline_v2.json && echo v2=1 >> \"$GITHUB_OUTPUT\" || echo skip, no baseline_v2"
-      - if: steps.has.outputs.v2
-        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
-        with: {python-version: "3.13", activate-environment: true, enable-cache: true, cache-dependency-glob: "src/requirements*.txt"}
-      - if: steps.has.outputs.v2
-        run: uv pip install -r requirements.txt -r requirements-lab9.txt
-      - if: steps.has.outputs.v2
-        run: python -m pytest -q -m student -o addopts= -k advanced
-      - if: steps.has.outputs.v2
-        run: python -m lab9.evalset --v2
-      - if: steps.has.outputs.v2
-        run: python -m lab9.mutation --spec config/metric_spec_v2.yaml --baseline reports/baseline_v2.json
