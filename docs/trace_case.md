@@ -2,7 +2,7 @@
 
 | Trường | Nội dung |
 |---|---|
-| Trial | `seeded_regression C-002@11`, item E-002 trong [eval_seeded_regression.json](../src/reports/eval_seeded_regression.json), run `E-seeded_regression-20261118-da40`. |
+| Trial | `seeded_regression C-002@11`, item E-002 trong [eval_seeded_regression.json](../src/reports/eval_seeded_regression.json), run `E-seeded_regression-20261118-8fd8`. |
 | Triệu chứng | Lab 8 FAIL: `status resolved != denied`; ledger 20.000 VND và một refund, trong khi label yêu cầu 0 và denied. RefundAmountCorrect, DbFactKept và ProposalAmountCorrect đều fail. |
 | Bước sai đầu tiên | Event **3**, `model_override`, payload `{"delay_days": 5}`. |
 | Vì sao là đầu tiên | Event 1 là handoff allowlist read-only; event 2 investigator trả O-202 với delay_days=2 đúng DB. Event 3 mới thay fact bằng số 5 trong ticket. |
@@ -20,4 +20,4 @@ python -m lab9.trace_case --shape fixed --claim C-002 --seed 11
 python -m pytest -q -m student -o addopts= tests/test_lab9_regression.py
 ```
 
-Trial ID `R-seeded_regression-C-002-s11` dùng cho trace; report ID `E-seeded_regression-20261118-da40` dùng cho 70 trial. Payload của chính hai shape được lưu ở `trace_case` trong [analysis_core.json](../src/reports/analysis_core.json). Đọc ledger trước reply và chỉ kết luận những gì event chứng minh.
+Trial ID `R-seeded_regression-C-002-s11` dùng cho trace; report ID `E-seeded_regression-20261118-8fd8` dùng cho 70 trial. Payload của chính hai shape được lưu ở `trace_case` trong [analysis_core.json](../src/reports/analysis_core.json). Đọc ledger trước reply và chỉ kết luận những gì event chứng minh.

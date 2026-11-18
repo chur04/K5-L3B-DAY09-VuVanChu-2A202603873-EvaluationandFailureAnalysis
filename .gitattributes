@@ -1,0 +1,5 @@
+# Evaluation inputs and evidence use the same line endings on Windows and Linux.
+src/data/eval/*.jsonl text eol=lf
+src/data/eval/labels_*.json text eol=lf
+src/reports/*.json text eol=lf
+src/reports/verification.txt text eol=lf

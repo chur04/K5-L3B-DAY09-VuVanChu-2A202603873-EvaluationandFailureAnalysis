@@ -5,7 +5,7 @@ Bổ sung bộ đánh giá Core cho refund agent: taxonomy FM-01–FM-08 có tra
 ## M1 — Taxonomy và eval set
 
 - Tám FM có định nghĩa, layer, claim@seed, bước sai đầu tiên, grader và metric.
-- Eval set v1 SHA **da402347cdae**, 14 item × 5 seed, checker **0 problem**.
+- Eval set v1 SHA **8fd87e07c356**, 14 item × 5 seed, checker **0 problem**.
 - Provenance có source/matrix/trace/generator/label_by/checked_by; nhãn nằm riêng trong labels_v1.json.
 - Trace case C-002@11: event 3 model_override thay delay DB 2 bằng ticket 5; regression test chạy đúng seeded_regression và fixed.
 
@@ -30,10 +30,10 @@ Có 20/20 trial lỗi được grader chẩn đoán, 0/70 false alarm trên fixe
 
 ## M4 — Baseline, bootstrap và gate
 
-- Baseline `E-swarm-20261118-da40`: pass_rate 0.9857.
+- Baseline `E-swarm-20261118-8fd8`: pass_rate 0.9857.
 - Swarm chạy lại độc lập: cùng số liệu baseline, gate exit 0, ci_check exit 0.
-- Fixed `E-fixed-20261118-da40`: pass_rate 1.0, gate exit 0.
-- Seeded regression `E-seeded_regression-20261118-da40`: pass_rate 0.7143.
+- Fixed `E-fixed-20261118-8fd8`: pass_rate 1.0, gate exit 0.
+- Seeded regression `E-seeded_regression-20261118-8fd8`: pass_rate 0.7143.
 - Bootstrap paired theo item, 1.000 resample percentile, RNG 2027, confidence 95%; sai số so tham chiếu <0.01.
 
 Output gate seeded_regression (trích):
@@ -49,7 +49,7 @@ Cả swarm/fixed/seeded_regression dùng chung spec và baseline. Harness map c�
 
 ## Validation và tài liệu
 
-- **57 test host + 25 test Core** pass.
+- **57 test host + 28 test Core** pass.
 - Tái lập: từ src/ chạy `python -m lab9.evalset --build --check`, rồi `python -m lab9.evidence --verify`.
 - Report cần nộp: baseline_v1.json, eval_fixed.json, eval_seeded_regression.json; thêm eval_pr.json, analysis_core.json, verification.txt để kiểm chứng.
 - docs/: failure_taxonomy.md, trace_case.md, judge_audit.md, eval_card.md, PRD_v1.1.md đã điền bằng số liệu report.

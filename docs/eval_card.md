@@ -4,15 +4,15 @@ Ngày đo: 18/11/2026 (UTC+7). Eval owner: Vu Van Chu. Nguồn là report do `py
 
 ## Phiên bản và tập đánh giá
 
-- Eval set **v1**, SHA **da402347cdae**; 14 item từ lab8_public × seeds 11/22/33/44/55 = 70 trial mỗi shape.
+- Eval set **v1**, SHA **8fd87e07c356** (chuẩn hóa CRLF thành LF trước khi băm); 14 item từ lab8_public × seeds 11/22/33/44/55 = 70 trial mỗi shape.
 - Item có failure_modes và provenance; nhãn tách riêng trong `labels_v1.json`.
 - Metric spec **1.1**, `config/metric_spec.yaml`; harness pydantic-evals; backend MockLLM, không cần API key.
-- Baseline: `E-swarm-20261118-da40`, [baseline_v1.json](../src/reports/baseline_v1.json).
+- Baseline: `E-swarm-20261118-8fd8`, [baseline_v1.json](../src/reports/baseline_v1.json).
 - PR swarm chạy lại độc lập: [eval_pr.json](../src/reports/eval_pr.json), cùng run ID theo quy ước harness nhưng là file riêng; kiểm baseline bằng `lab9.ci_check`.
-- Fixed: `E-fixed-20261118-da40`, [eval_fixed.json](../src/reports/eval_fixed.json).
-- Seeded regression: `E-seeded_regression-20261118-da40`, [eval_seeded_regression.json](../src/reports/eval_seeded_regression.json).
+- Fixed: `E-fixed-20261118-8fd8`, [eval_fixed.json](../src/reports/eval_fixed.json).
+- Seeded regression: `E-seeded_regression-20261118-8fd8`, [eval_seeded_regression.json](../src/reports/eval_seeded_regression.json).
 
-Manifest ghi SHA labels/spec/source, Python, thời điểm chạy UTC+7, commit cha và working_tree_dirty. Commit cha là `1e4a9ac2bf6308ecf9a276c8a5ab08a812a2e2b7`; phần triển khai Core đang chưa commit nên không dùng hash này để giả định đã có commit mới. source_sha256 ghi nội dung nguồn thực sự đã chạy, chuẩn hóa LF/CRLF. Run ID của harness không phải UUID: cần đi kèm tên file và manifest để phân biệt các lần chạy.
+Manifest ghi SHA labels/spec/source, Python, thời điểm chạy UTC+7, commit cha và working_tree_dirty. Commit cha là `6bb0b8d58cd459809c25f6d93ae349618c867496`; bản sửa lỗi SHA xuống dòng đang chưa commit nên không dùng hash này để giả định đã có commit mới. source_sha256 ghi nội dung nguồn thực sự đã chạy, chuẩn hóa LF/CRLF. Run ID của harness không phải UUID: cần đi kèm tên file và manifest để phân biệt các lần chạy.
 
 ## Metric, ngưỡng và kết quả
 
@@ -60,7 +60,7 @@ Tone đạt κ=0.757, P=0.857, R=0.800, đủ floors. Helpful bị loại: κ=0.
 
 ## Kiểm tra và trách nhiệm
 
-[verification.txt](../src/reports/verification.txt) ghi **57 test host** và **25 test Core** pass; smoke, evalset checker, calibration, baseline sanity, detection và ba gate đều có exit code đúng. Test command Core là `python -m pytest -q -m student -o addopts= -k "lab9 and not advanced"`.
+[verification.txt](../src/reports/verification.txt) ghi **57 test host** và **28 test Core** pass; smoke, evalset checker, calibration, baseline sanity, detection và ba gate đều có exit code đúng. Test command Core là `python -m pytest -q -m student -o addopts= -k "lab9 and not advanced"`.
 
 CI chỉ có job đánh giá Core `eval-gate`: kiểm host/Core, eval set, detection, tái chạy swarm, kiểm baseline và metric riêng, xác nhận fixed qua và seeded_regression bị chặn ở pass_rate. GitHub CI thật chỉ được xác nhận sau khi người dùng commit, push và mở PR; hiện mới có bằng chứng local.
 

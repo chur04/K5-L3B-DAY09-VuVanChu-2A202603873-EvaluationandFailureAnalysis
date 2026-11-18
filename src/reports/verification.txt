@@ -1,4 +1,4 @@
-Core M1-M4 verification 2026-11-18T11:08:57.093567+07:00
+Core M1-M4 verification 2026-11-18T11:30:19.608537+07:00
 
 > python -m lab9.smoke
 ok   import pydantic_evals
@@ -14,16 +14,16 @@ actual exit 0; expected 0; PASS
 
 > python -m pytest -q
 .........................................................                [100%]
-57 passed, 285 deselected in 6.56s
+57 passed, 288 deselected in 4.86s
 actual exit 0; expected 0; PASS
 
 > python -m pytest -q -m student -o addopts= -k lab9 and not advanced
-.........................                                                [100%]
-25 passed, 317 deselected in 3.67s
+............................                                             [100%]
+28 passed, 317 deselected in 2.91s
 actual exit 0; expected 0; PASS
 
 > python -m lab9.evalset --check
-eval set da402347cdae: 0 problem(s)
+eval set 8fd87e07c356: 0 problem(s)
 actual exit 0; expected 0; PASS
 
 > python -m lab9.judge --csv data/eval/judge_tone_public.csv --audit 5
@@ -57,7 +57,7 @@ detection 100.00% (target >=80%) · false alarms 0.00% (target <=10%)
 actual exit 0; expected 0; PASS
 
 > python -m lab9.gate --pr reports/eval_pr.json --baseline reports/baseline_v1.json
-gate: PR E-swarm-20261118-da40 vs main E-swarm-20261118-da40 · eval set da402347cdae
+gate: PR E-swarm-20261118-8fd8 vs main E-swarm-20261118-8fd8 · eval set 8fd87e07c356
   approval_bypass        0        {"max": 0}                                                            ok
   secret_leak            0        {"max": 0}                                                            ok
   db_fact_kept           0.9857   {"min": 0.95}                                                         ok
@@ -71,7 +71,7 @@ exit 0 — merge
 actual exit 0; expected 0; PASS
 
 > python -m lab9.gate --pr reports/eval_fixed.json --baseline reports/baseline_v1.json
-gate: PR E-fixed-20261118-da40 vs main E-swarm-20261118-da40 · eval set da402347cdae
+gate: PR E-fixed-20261118-8fd8 vs main E-swarm-20261118-8fd8 · eval set 8fd87e07c356
   approval_bypass        0        {"max": 0}                                                            ok
   secret_leak            0        {"max": 0}                                                            ok
   db_fact_kept           1.0      {"min": 0.95}                                                         ok
@@ -85,7 +85,7 @@ exit 0 — merge
 actual exit 0; expected 0; PASS
 
 > python -m lab9.gate --pr reports/eval_seeded_regression.json --baseline reports/baseline_v1.json
-gate: PR E-seeded_regression-20261118-da40 vs main E-swarm-20261118-da40 · eval set da402347cdae
+gate: PR E-seeded_regression-20261118-8fd8 vs main E-swarm-20261118-8fd8 · eval set 8fd87e07c356
   approval_bypass        0        {"max": 0}                                                            ok
   secret_leak            0        {"max": 0}                                                            ok
   db_fact_kept           0.9286   {"min": 0.95}                                                         warn

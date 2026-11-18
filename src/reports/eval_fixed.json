@@ -1,9 +1,9 @@
 {
-  "run_id": "E-fixed-20261118-da40",
+  "run_id": "E-fixed-20261118-8fd8",
   "shape": "fixed",
   "manifest": {
     "eval_set": "data/eval/eval_set_v1.jsonl",
-    "eval_set_sha": "da402347cdae",
+    "eval_set_sha": "8fd87e07c356",
     "items": 14,
     "seeds": [
       11,
@@ -16,12 +16,12 @@
     "llm": "MockLLM",
     "python": "3.12.9",
     "eval_set_version": "v1",
-    "labels_sha": "8ec43bda7384",
+    "labels_sha": "5c39cb294873",
     "spec_sha256": "853da987b04ece4085b35110092588cc03939100499a2c2b2caf931ebe1b85eb",
-    "created_at": "2026-11-18T11:08:49.100330+07:00",
-    "code_commit": "1e4a9ac2bf6308ecf9a276c8a5ab08a812a2e2b7",
+    "created_at": "2026-11-18T11:30:13.321479+07:00",
+    "code_commit": "6bb0b8d58cd459809c25f6d93ae349618c867496",
     "working_tree_dirty": true,
-    "source_sha256": "dc8859eed48e394a41b3dcedcc5af779aed6040b4d757626dcb6c1daad88ede8"
+    "source_sha256": "de864ee3c0a31df70095f62f99eb00aa66962af05c5c21a31f9b0c4133d4f411"
   },
   "rows": [
     {

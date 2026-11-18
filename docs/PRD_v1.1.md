@@ -21,7 +21,7 @@ Môi trường đo: MockLLM, eval set v1 gồm 14 item × 5 seed; judge là CSV 
 
 ## 3. Định nghĩa chạy đúng
 
-Spec: `config/metric_spec.yaml`, version 1.1. Baseline: `E-swarm-20261118-da40`, [baseline_v1.json](../src/reports/baseline_v1.json), eval SHA `da402347cdae`, seeds 11/22/33/44/55.
+Spec: `config/metric_spec.yaml`, version 1.1. Baseline: `E-swarm-20261118-8fd8`, [baseline_v1.json](../src/reports/baseline_v1.json), eval SHA `8fd87e07c356`, seeds 11/22/33/44/55.
 
 | Metric | Loại / mức | Ngưỡng | Chặn release? | Baseline |
 |---|---|---|---|---|
