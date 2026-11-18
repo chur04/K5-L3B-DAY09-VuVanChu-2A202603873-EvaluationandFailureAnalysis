@@ -13,11 +13,13 @@ written by this script only -- never edit reports/ by hand.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import platform
+import subprocess
 import tempfile
 import time
-from datetime import date
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -33,6 +35,23 @@ from lab9.graders import GRADERS
 
 SPEC = Path("config/metric_spec.yaml")
 WORLD = Path("data/public_world_state.json")
+
+
+def source_revision() -> dict[str, Any]:
+    """Record the actual local source, including uncommitted work, without claiming a new commit."""
+    digest = hashlib.sha256()
+    files = sorted(p for folder in ("lab8", "lab9", "config") for p in Path(folder).rglob("*")
+                   if p.suffix in {".py", ".yaml"})
+    for path in files:
+        digest.update(path.as_posix().encode())
+        digest.update(path.read_bytes().replace(b"\r\n", b"\n"))
+    try:
+        head = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+        dirty = bool(subprocess.run(["git", "status", "--porcelain"], capture_output=True,
+                                    text=True, check=True).stdout.strip())
+    except (OSError, subprocess.CalledProcessError):
+        head, dirty = None, None
+    return {"code_commit": head, "working_tree_dirty": dirty, "source_sha256": digest.hexdigest()}
 
 
 def load_spec(path: Path = SPEC) -> dict[str, Any]:
@@ -104,11 +123,16 @@ def run_eval(shape: str, spec: dict[str, Any], seeds: list[int] | None = None) -
                      "cost": float(c.output["result"].get("cost_estimate") or 0.0)})
     failures = [f"{c.name}:{f.name}:{f.error_message[:80]}" for c in report.cases for f in c.evaluator_failures]
     eval_set_sha = evalset.sha12(Path(spec["eval_set"]))
-    run_id = f"E-{shape}-{date.today():%Y%m%d}-{eval_set_sha[:4]}"
+    created = datetime.now(timezone(timedelta(hours=7)))
+    run_id = f"E-{shape}-{created:%Y%m%d}-{eval_set_sha[:4]}"
     return {"run_id": run_id, "shape": shape,
             "manifest": {"eval_set": spec["eval_set"], "eval_set_sha": eval_set_sha, "items": len(items),
                          "seeds": seeds, "metric_spec_version": spec["metric_spec_version"],
-                         "llm": "MockLLM", "python": platform.python_version()},
+                         "llm": "MockLLM", "python": platform.python_version(),
+                         "eval_set_version": spec["eval_set_version"],
+                         "labels_sha": evalset.sha12(Path(spec["labels"])),
+                         "spec_sha256": hashlib.sha256(json.dumps(spec, sort_keys=True).encode()).hexdigest(),
+                         "created_at": created.isoformat(), **source_revision()},
             "rows": rows, "evaluator_failures": failures,
             "metrics": aggregate(rows, metric_ids, k_values=spec.get("pass_k", []))}
 
